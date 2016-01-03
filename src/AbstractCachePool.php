@@ -22,7 +22,7 @@ use Psr\Cache\CacheItemPoolInterface;
  * @author Aaron Scherer <aequasi@gmail.com>
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-abstract class BaseCachePool implements CacheItemPoolInterface, TaggablePoolInterface
+abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePoolInterface
 {
     use TaggablePoolTrait;
 
