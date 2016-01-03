@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of php-cache\doctrine-adapter package.
+ * This file is part of php-cache\adapter-common package.
  *
- * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>
+ * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>, Tobias Nyholm <tobias.nyholm@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -29,12 +29,12 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
     /**
      * List of invalid (or reserved) key characters.
      *
-     * @var string
+     * @type string
      */
     const KEY_INVALID_CHARACTERS = '{}()/\@:';
 
     /**
-     * @var CacheItemInterface[] deferred
+     * @type CacheItemInterface[] deferred
      */
     private $deferred = [];
 
