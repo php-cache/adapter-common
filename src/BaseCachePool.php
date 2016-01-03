@@ -237,7 +237,7 @@ abstract class BaseCachePool implements CacheItemPoolInterface, TaggablePoolInte
      *
      * @throws InvalidArgumentException
      */
-    private function validateKey($key)
+    protected function validateKey($key)
     {
         if (!is_string($key)) {
             throw new InvalidArgumentException(sprintf(
