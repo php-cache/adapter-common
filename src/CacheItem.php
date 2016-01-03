@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of php-cache\doctrine-adapter package.
+ * This file is part of php-cache\cache-bundle package.
  *
- * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>
+ * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>, Tobias Nyholm <tobias.nyholm@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -24,22 +24,22 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     use TaggableItemTrait;
 
     /**
-     * @var string
+     * @type string
      */
     private $key;
 
     /**
-     * @var mixed
+     * @type mixed
      */
     private $value;
 
     /**
-     * @var \DateTime|null
+     * @type \DateTime|null
      */
     private $expirationDate = null;
 
     /**
-     * @var bool
+     * @type bool
      */
     private $hasValue = false;
 
@@ -49,7 +49,7 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     public function __construct($key)
     {
         $this->taggedKey = $key;
-        $this->key = $this->getKeyFromTaggedKey($key);
+        $this->key       = $this->getKeyFromTaggedKey($key);
     }
 
     /**
@@ -65,7 +65,7 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
      */
     public function set($value)
     {
-        $this->value = $value;
+        $this->value    = $value;
         $this->hasValue = true;
 
         return $this;
