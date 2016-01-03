@@ -153,7 +153,7 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
             // Delete form deferred
             unset($this->deferred[$taggedKey]);
 
-            if (!$this->clearOneObjectFromCache($key)) {
+            if (!$this->clearOneObjectFromCache($taggedKey)) {
                 $deleted = false;
             }
         }
