@@ -34,7 +34,7 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     private $value;
 
     /**
-     * @type \DateTime|null
+     * @type \DateTimeInterface|null
      */
     private $expirationDate = null;
 
@@ -44,12 +44,21 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     private $hasValue = false;
 
     /**
-     * @param string $key
+     * @param string                  $key
+     * @param bool                    $hasValue
+     * @param mixed                   $value
+     * @param \DateTimeInterface|null $experationDate
      */
-    public function __construct($key)
+    public function __construct($key, $hasValue = false, $value = null, \DateTimeInterface $experationDate = null)
     {
-        $this->taggedKey = $key;
-        $this->key       = $this->getKeyFromTaggedKey($key);
+        $this->taggedKey      = $key;
+        $this->key            = $this->getKeyFromTaggedKey($key);
+        $this->hasValue       = $hasValue;
+        $this->experationDate = $experationDate;
+
+        if ($hasValue) {
+            $this->value = $value;
+        }
     }
 
     /**
