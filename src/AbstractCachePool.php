@@ -36,7 +36,7 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
     /**
      * @type CacheItemInterface[] deferred
      */
-    private $deferred = [];
+    protected $deferred = [];
 
     /**
      * Make sure to commit before we destruct.
