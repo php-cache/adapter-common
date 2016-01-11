@@ -168,6 +168,11 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
      */
     public function save(CacheItemInterface $item)
     {
+        // This item has no data
+        if (!$item->isHit()) {
+            return false;
+        }
+
         if ($item instanceof TaggableItemInterface) {
             $key = $item->getTaggedKey();
         } else {
@@ -238,7 +243,7 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
             ));
         }
 
-        if (preg_match('|[\{\}\(\)/\\@\:]|', $key)) {
+        if (preg_match('|[\{\}\(\)/\\\@\:]|', $key)) {
             throw new InvalidArgumentException(sprintf(
                 'Invalid key: "%s". The key contains one or more characters reserved for future extension: {}()/\@:',
                 $key
