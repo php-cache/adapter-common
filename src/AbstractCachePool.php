@@ -27,13 +27,6 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
     use TaggablePoolTrait;
 
     /**
-     * List of invalid (or reserved) key characters.
-     *
-     * @type string
-     */
-    const KEY_INVALID_CHARACTERS = '{}()/\@:';
-
-    /**
      * @type CacheItemInterface[] deferred
      */
     protected $deferred = [];
@@ -245,12 +238,10 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
             ));
         }
 
-        $invalid = preg_quote(static::KEY_INVALID_CHARACTERS, '|');
-        if (preg_match('|['.$invalid.']|', $key)) {
+        if (preg_match('|[\{\}\(\)/\\@\:]|', $key)) {
             throw new InvalidArgumentException(sprintf(
-                'Invalid key: "%s". The key contains one or more characters reserved for future extension: %s',
-                $key,
-                static::KEY_INVALID_CHARACTERS
+                'Invalid key: "%s". The key contains one or more characters reserved for future extension: {}()/\@:',
+                $key
             ));
         }
     }
