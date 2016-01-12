@@ -11,6 +11,6 @@
 
 namespace Cache\Adapter\Common\Exception;
 
-class InvalidArgumentException extends \Exception implements \Psr\Cache\InvalidArgumentException
+class InvalidArgumentException extends \InvalidArgumentException implements \Psr\Cache\InvalidArgumentException
 {
 }
