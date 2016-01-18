@@ -60,18 +60,22 @@ class CacheItemTest extends \PHPUnit_Framework_TestCase
 
     public function testHit()
     {
-        $item = new CacheItem('test_key');
+        $item = new CacheItem('test_key', true, 'value');
+        $this->assertTrue($item->isHit());
+
+        $item = new CacheItem('test_key', false, 'value');
         $this->assertFalse($item->isHit());
 
-        $item->set('foobar');
+        $closure = function () {
+            return [true, 'value'];
+        };
+        $item = new CacheItem('test_key', $closure);
         $this->assertTrue($item->isHit());
 
-        $item->set(null);
-        $this->assertTrue($item->isHit());
-
-        $item->expiresAfter(5);
-        $this->assertTrue($item->isHit());
-        $item->expiresAfter(-1);
+        $closure = function () {
+            return [false, null];
+        };
+        $item = new CacheItem('test_key', $closure);
         $this->assertFalse($item->isHit());
     }
 

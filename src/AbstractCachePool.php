@@ -61,12 +61,11 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
             return is_object($item) ? clone $item : $item;
         }
 
-        $item = $this->fetchObjectFromCache($key);
-        if (false === $item || !$item instanceof CacheItemInterface) {
-            $item = new CacheItem($key);
-        }
+        $func = function () use ($key) {
+            return $this->fetchObjectFromCache($key);
+        };
 
-        return $item;
+        return new CacheItem($key, $func);
     }
 
     /**
@@ -74,7 +73,7 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
      *
      * @param string $key
      *
-     * @return CacheItem|false
+     * @return array with [isHit, value]
      */
     abstract protected function fetchObjectFromCache($key);
 
@@ -168,11 +167,6 @@ abstract class AbstractCachePool implements CacheItemPoolInterface, TaggablePool
      */
     public function save(CacheItemInterface $item)
     {
-        // This item has no data
-        if (!$item->isHit()) {
-            return false;
-        }
-
         if ($item instanceof TaggableItemInterface) {
             $key = $item->getTaggedKey();
         } else {
