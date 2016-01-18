@@ -24,6 +24,11 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     use TaggableItemTrait;
 
     /**
+     * @type \Closure
+     */
+    private $callable;
+
+    /**
      * @type string
      */
     private $key;
@@ -44,20 +49,20 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     private $hasValue = false;
 
     /**
-     * @param string                  $key
-     * @param bool                    $hasValue
-     * @param mixed                   $value
-     * @param \DateTimeInterface|null $expirationDate
+     * @param string        $key
+     * @param \Closure|bool $callable or boolean hasValue
      */
-    public function __construct($key, $hasValue = false, $value = null, \DateTimeInterface $expirationDate = null)
+    public function __construct($key, $callable = null, $value = null)
     {
-        $this->taggedKey      = $key;
-        $this->key            = $this->getKeyFromTaggedKey($key);
-        $this->hasValue       = $hasValue;
-        $this->expirationDate = $expirationDate;
+        $this->taggedKey = $key;
+        $this->key       = $this->getKeyFromTaggedKey($key);
 
-        if ($hasValue) {
-            $this->value = $value;
+        if ($callable === true) {
+            $this->hasValue = true;
+            $this->value    = $value;
+        } elseif ($callable !== false) {
+            // This must be a callable or null
+            $this->callable = $callable;
         }
     }
 
@@ -76,6 +81,7 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     {
         $this->value    = $value;
         $this->hasValue = true;
+        $this->callable = null;
 
         return $this;
     }
@@ -97,15 +103,18 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
      */
     public function isHit()
     {
+        if ($this->callable !== null) {
+            // Initialize
+            $f                                  = $this->callable;
+            list($this->hasValue, $this->value) = $f();
+            $this->callable                     = null;
+        }
+
         if (!$this->hasValue) {
             return false;
         }
 
-        if ($this->expirationDate === null) {
-            return true;
-        }
-
-        return (new \DateTime()) <= $this->expirationDate;
+        return true;
     }
 
     /**
@@ -121,7 +130,11 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
      */
     public function expiresAt($expiration)
     {
-        $this->expirationDate = $expiration;
+        if ($expiration instanceof \DateTimeInterface) {
+            $this->expirationDate = clone $expiration;
+        } else {
+            $this->expirationDate = $expiration;
+        }
 
         return $this;
     }
