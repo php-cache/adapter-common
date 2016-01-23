@@ -114,6 +114,10 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
             return false;
         }
 
+        if ($this->expirationDate !== null) {
+            return $this->expirationDate > new \DateTime();
+        }
+
         return true;
     }
 
