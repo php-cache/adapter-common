@@ -122,7 +122,7 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     }
 
     /**
-     * @return \DateTime|null
+     * {@inheritdoc}
      */
     public function getExpirationDate()
     {

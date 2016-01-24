@@ -20,7 +20,7 @@ interface HasExpirationDateInterface
     /**
      * The date and time when the object expires.
      *
-     * @return \DateTime|null
+     * @return \DateTimeInterface|null
      */
     public function getExpirationDate();
 }
