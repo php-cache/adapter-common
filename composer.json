@@ -10,7 +10,7 @@
         "psr-6",
         "tag"
     ],
-    "homepage":          "https://github.com/php-cache/doctrine-adapter",
+    "homepage":          "https://github.com/php-cache/adapter-common",
     "authors":
     [
         {
