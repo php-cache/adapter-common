@@ -191,9 +191,15 @@ class CacheItem implements HasExpirationDateInterface, CacheItemInterface, Tagga
     private function initialize()
     {
         if ($this->callable !== null) {
-            $f                                               = $this->callable;
-            list($this->hasValue, $this->value, $this->tags) = $f();
-            $this->callable                                  = null;
+            $f              = $this->callable;
+            $result         = $f();
+            $this->hasValue = $result[0];
+            $this->value    = $result[1];
+            if (isset($result[2])) {
+                $this->tags = $result[2];
+            }
+            
+            $this->callable = null;
         }
     }
 }
